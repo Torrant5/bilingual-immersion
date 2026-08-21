@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bilingual Immersion"
+  short_description: "Mix complete target-language sentences into replies"
+  default_prompt: "Use $bilingual-immersion to mix 20% English sentences into our conversation while keeping the task accurate and clear."

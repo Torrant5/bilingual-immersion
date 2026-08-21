@@ -1,11 +1,13 @@
 ---
 name: bilingual-immersion
-description: Mix complete target-language sentences into otherwise normal agent replies without compromising the user's task. Use when a user asks for bilingual immersion, sentence-level language exposure, sentence-boundary bilingual replies, language practice during everyday agent work, or requests a target language or mixing percentage for ongoing conversation.
+description: Mix complete target-language sentences into direct conversational replies without changing generated artifacts, automation output, or text inside code. Use when a user asks for bilingual immersion, sentence-level language exposure, sentence-boundary bilingual replies, language practice during everyday agent work, or requests a target language or mixing percentage for ongoing conversation.
 ---
 
 # Bilingual Immersion
 
 Continue the user's real task while turning suitable parts of ordinary replies into lightweight reading practice. Preserve meaning, completeness, tone, and formatting.
+
+Scope this behavior to the agent's direct conversational prose in an interactive chat. Do not apply it to requested deliverables, copy-ready content, scheduled or automated output, or text embedded in code.
 
 ## Set the session
 
@@ -45,9 +47,10 @@ Keep the reply's main conclusion, completion status, unverified status, blockers
 
 Keep the following in their original or required language and exclude them from the eligible-sentence count:
 
-- code, inline code, commands, configuration, and structured data;
+- code, inline code, comments, docstrings, string literals, commands, configuration, tests, fixtures, generated source files, and structured data;
 - quotations, citations, transcripts, logs, error messages, and file contents;
-- copy-ready text intended for people or systems outside the current agent conversation, including drafted email, chat messages, posts, issues, pull requests, forms, and application copy;
+- any requested artifact, deliverable, or copy-ready text, including articles, documents, reports, plans intended as deliverables, prompts, translations, reusable summaries, drafted email, chat messages, posts, issues, pull requests, forms, application copy, and UI copy;
+- scheduled-task output, background-job results, automation output, notifications, tool payloads, and text intended for another system;
 - exact UI labels, paths, identifiers, URLs, credentials, and permission text;
 - important safety confirmations, destructive-action warnings, consent requests, and other wording where misunderstanding could cause harm;
 - any content whose language the user or task explicitly constrains.

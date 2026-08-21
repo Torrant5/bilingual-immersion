@@ -1,6 +1,6 @@
 # Bilingual Immersion Agent Skill
 
-A portable Agent Skill that turns everyday conversations with an AI coding agent into lightweight reading practice. It mixes complete sentences in a target language into normal replies while keeping task accuracy, safety, and copy-ready content intact.
+A portable Agent Skill that turns everyday conversations with an AI coding agent into lightweight reading practice. It mixes complete sentences in a target language into direct conversational replies while keeping task accuracy, safety, generated artifacts, automation output, and code text intact.
 
 Designed for Codex and Claude Code using the open Agent Skills format.
 
@@ -9,7 +9,8 @@ Designed for Codex and Claude Code using the open Agent Skills format.
 - Uses sentence-level immersion instead of swapping isolated words.
 - Defaults to 20% of eligible sentences and accepts another percentage at any time.
 - Supports a user-selected target language.
-- Leaves code, commands, quotes, logs, errors, file contents, externally delivered text, and safety-critical wording unchanged.
+- Leaves every requested artifact or copy-ready deliverable unchanged, including documents, email, posts, reports, prompts, translations, and UI copy.
+- Leaves code text, scheduled or automated output, commands, quotes, logs, errors, file contents, and safety-critical wording unchanged.
 - Explains the latest target-language sentence in the user's main language when asked, then reduces the mix.
 - Automatically uses less immersion when a reply is short, risky, or precision-sensitive.
 
@@ -47,7 +48,7 @@ For another Agent Skills-compatible tool, copy `skills/bilingual-immersion/` int
 Installing the skill makes it available; it does not guarantee activation on every unrelated prompt. Invoke it explicitly at the start of a conversation. For optional always-on use, add a short instruction such as the following to your host's persistent guidance (`~/.codex/AGENTS.md` for Codex or `~/.claude/CLAUDE.md` for Claude Code):
 
 ```text
-Apply the bilingual-immersion skill to direct conversational replies with 20% English unless I change the ratio or turn it off.
+Apply the bilingual-immersion skill to direct conversational replies with 20% English unless I change the ratio or turn it off. Do not apply it to generated artifacts, copy-ready content, scheduled or automated output, tool payloads, or any text inside code.
 ```
 
 ## Usage
@@ -72,6 +73,7 @@ The percentage applies to eligible sentences, so the actual mix may be lower whe
 ## Limitations
 
 - This is prompt-based behavior, so ratios are approximate and model-dependent.
+- Only direct conversational prose is eligible. Generated artifacts, scheduled or automated output, and text inside code stay in their required language.
 - It generates mixed replies directly; it does not rewrite existing pages or past messages.
 - It has no click-to-translate interface. Ask for the source-language meaning instead.
 - It stores no settings or conversation data and makes no network requests by itself.
@@ -82,7 +84,7 @@ Conceptual inspiration: [Mazelingo](https://mazelingo-web.pages.dev/), an indepe
 
 ---
 
-日常的なAIコーディングエージェントとの会話を、軽い読解練習に変えるポータブルな Agent Skill です。作業の正確さ、安全性、そのまま外部へ送る文章を保ちながら、通常の返答の一部を対象言語の完全な文に置き換えます。
+日常的なAIコーディングエージェントとの会話を、軽い読解練習に変えるポータブルな Agent Skill です。作業の正確さ、安全性、生成物、自動処理の出力、コード内の文章を保ちながら、直接会話の返答だけを対象言語の完全な文に置き換えます。
 
 オープンな Agent Skills 形式を使用し、CodexとClaude Code向けに設計しています。
 
@@ -91,7 +93,8 @@ Conceptual inspiration: [Mazelingo](https://mazelingo-web.pages.dev/), an indepe
 - 単語だけを差し替えず、文単位でイマージョンを行います。
 - 対象となる文の20%を既定値とし、会話中に割合を変更できます。
 - 対象言語をユーザーが指定できます。
-- コード、コマンド、引用、ログ、エラー、ファイル内容、外部送信用の文章、重要な安全確認は変更しません。
+- 文書、メール、投稿、レポート、プロンプト、翻訳、UI文言など、依頼された生成物やそのまま使う文章は変更しません。
+- コード内の文章、定時実行や自動化の出力、コマンド、引用、ログ、エラー、ファイル内容、重要な安全確認は変更しません。
 - 分からないと伝えると、直近の対象言語の文を母語で説明し、その後の割合を下げます。
 - 短い返答、高リスクな作業、厳密さが必要な場面では自動的に割合を下げます。
 
@@ -129,7 +132,7 @@ cp -R \
 インストールだけでは、無関係なすべての依頼で必ず自動起動するわけではありません。会話の開始時に明示的に呼び出してください。常時利用したい場合は、ホストの永続指示（Codexは `~/.codex/AGENTS.md`、Claude Codeは `~/.claude/CLAUDE.md`）へ、次のような短い指示を任意で追加できます。
 
 ```text
-直接会話の返答には bilingual-immersion スキルを適用し、変更またはOFFの指定がない限り英語を20%混ぜる。
+直接会話の返答には bilingual-immersion スキルを適用し、変更またはOFFの指定がない限り英語を20%混ぜる。生成物、そのまま使う文章、定時実行や自動化の出力、ツールへ渡す内容、コード内の文章には適用しない。
 ```
 
 ## 使い方
@@ -154,6 +157,7 @@ $bilingual-immersion を使って、英語を20%混ぜて。
 ## 制限事項
 
 - プロンプトによる挙動のため、割合は概算であり、モデルによって差が出ます。
+- 対象は直接会話の説明文だけです。生成物、定時実行や自動化の出力、コード内の文章は必要な言語のまま維持します。
 - 既存ページや過去の発言を後処理せず、混在した返答を直接生成します。
 - クリックによる言語切替はありません。分からない文は母語での説明を依頼してください。
 - スキル自体は設定や会話データを保存せず、ネットワーク通信も追加しません。

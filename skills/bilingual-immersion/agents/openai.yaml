@@ -1,4 +1,4 @@
 interface:
   display_name: "Bilingual Immersion"
   short_description: "Mix sentences only in direct conversational replies"
-  default_prompt: "Use $bilingual-immersion to mix 20% English sentences into our direct conversation while leaving generated artifacts, automation output, and code text unchanged."
+  default_prompt: "Use $bilingual-immersion to mix 20% beginner-level English sentences into our direct conversation while leaving generated artifacts, automation output, and code text unchanged."

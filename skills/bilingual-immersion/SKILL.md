@@ -1,6 +1,6 @@
 ---
 name: bilingual-immersion
-description: Mix complete target-language sentences into direct conversational replies without changing generated artifacts, automation output, or text inside code. Use when a user asks for bilingual immersion, sentence-level language exposure, sentence-boundary bilingual replies, language practice during everyday agent work, or requests a target language or mixing percentage for ongoing conversation.
+description: Mix complete target-language sentences into direct conversational replies with beginner-first adaptive difficulty, without changing generated artifacts, automation output, or text inside code. Use when a user asks for bilingual immersion, sentence-level language exposure, sentence-boundary bilingual replies, language practice during everyday agent work, or requests a target language, mixing percentage, or difficulty for ongoing conversation.
 ---
 
 # Bilingual Immersion
@@ -16,8 +16,9 @@ Maintain these settings for the conversation once the skill is invoked:
 - Infer the source language from the user's predominant language.
 - Use the user's requested target language. If none is given, default to English when the source language is not English; if the source language is already English, ask for a target language before mixing.
 - Use the user's requested ratio. Otherwise target 20% of eligible sentences.
+- Use the user's requested difficulty. Otherwise start at `beginner`. Difficulty is separate from the ratio.
 - Treat `0%`, `off`, and equivalent requests as disabling the mix until the user enables it again.
-- Accept later changes to the target language or ratio without resetting the rest of the task context.
+- Accept later changes to the target language, ratio, or difficulty without resetting the rest of the task context.
 - Keep settings in the current conversation by default. Do not claim they persist across new conversations or write configuration files unless the user explicitly asks for persistence and the host supports it.
 
 Treat the ratio as a sentence-count target, not a word-count target or a promise of mathematical precision.
@@ -27,13 +28,27 @@ Do not round every short reply upward. When recent conversational context is ava
 
 1. Draft the complete, task-correct reply in the source language first.
 2. Identify eligible, self-contained sentences.
-3. Select approximately the configured percentage of eligible sentences. Prefer explanatory context, summaries, transitions, and low-risk observations whose meaning remains clear from surrounding context.
+3. Select approximately the configured percentage of eligible sentences. Do not select randomly. Prefer explanatory context, summaries, transitions, and low-risk observations whose meaning remains clear from surrounding context.
 4. Rewrite each selected sentence naturally and completely in the target language.
 5. Check that the final reply preserves every fact, qualification, action, and requested deliverable.
 
 Do not add filler merely to reach the ratio. Use fewer or no target-language sentences in short replies, urgent situations, high-risk work, or whenever mixing would reduce clarity.
 
 Keep the reply's main conclusion, completion status, unverified status, blockers, and questions requiring a user decision in the source language. Avoid selecting a sentence that introduces an important name, number, condition, or action for the first time. At ratios of 40% or less, normally leave source-language context between selected sentences instead of clustering them.
+
+## Choose difficulty
+
+Keep difficulty independent from the ratio. A reply can use 20% target-language sentences while keeping those sentences beginner-level.
+
+- `beginner`: Select short, concrete sentences with common vocabulary, active voice, and simple present, past, future, or imperative forms. Prefer one-clause sentences. Avoid idioms, dense modifiers, domain-specific terms, and important first mentions unless surrounding source-language context already makes the meaning obvious.
+- `intermediate`: Use familiar work vocabulary, light abstraction, cause-and-effect, simple conditionals, or two-clause sentences. Keep idioms rare and transparent.
+- `advanced`: Use more abstract explanation, nuance, qualifiers, constraints, tradeoffs, and longer sentences when useful. Still avoid obscure idioms or wording that would reduce task clarity.
+
+When no difficulty is set, start at the easiest end of `beginner` and choose the easiest eligible sentence that still sounds natural. After several target-language sentences without a difficulty signal, gradually use more of the current level's range, but do not cross into the next level merely because the user stayed silent.
+
+Promote to the next level only when the user asks for harder language, explicitly says the current level is easy, or demonstrates understanding of mixed sentences on at least two separate turns. Treat this as a conversational estimate, not a proficiency test.
+
+If the user asks for `easier`, `harder`, `beginner`, `intermediate`, `advanced`, or equivalent wording, update difficulty immediately while keeping the ratio unchanged unless they also mention ratio. If they ask for easier language while already at `beginner`, stay at that level and use shorter sentences with more common words.
 
 ## Keep sentence boundaries clean
 
@@ -59,12 +74,13 @@ Explain protected material in mixed-language surrounding prose only when that ex
 
 ## Recover when the user does not understand
 
-When the user signals that a target-language sentence was unclear:
+When the user signals that a target-language sentence was unclear or too difficult:
 
 1. Identify the most recent mixed sentence they are referring to. Ask which one only if the reference is genuinely ambiguous.
 2. Restate its meaning in the source language and briefly explain difficult phrasing when useful.
-3. Lower the session ratio by 10 percentage points, unless the user requests a different ratio. Do not go below 0%.
-4. Continue the underlying task; do not turn the whole conversation into a language lesson unless requested.
+3. Lower the session difficulty by one level when possible, unless the user requests a different difficulty.
+4. Lower the session ratio by 10 percentage points, unless the user requests a different ratio. Do not go below 0%.
+5. Continue the underlying task; do not turn the whole conversation into a language lesson unless requested.
 
 If the user asks for the source-language version without indicating difficulty, translate the requested sentence but keep the current ratio.
 
